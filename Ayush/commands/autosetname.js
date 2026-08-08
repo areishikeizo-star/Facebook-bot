@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const LOCKS_PATH = path.join(__dirname, "../../../includes/database/nameLocks.json");
-const OWNER_UID = "61550558518720"; // 🔒 Owner UID
+const OWNER_UID = "61592733813719"; // 🔒 Owner UID
 
 module.exports.config = {
   name: "autosetname",
@@ -43,18 +43,18 @@ module.exports.run = async function ({ api, event, args }) {
     locks[threadID][mentionedID] = nameArgs;
     fs.writeFileSync(LOCKS_PATH, JSON.stringify(locks, null, 2));
     api.changeNickname(nameArgs, threadID, mentionedID);
-    return api.sendMessage(`🔒 Naam lock ho gaya: ${nameArgs}`, threadID);
+    return api.sendMessage(` : ${nameArgs}`, threadID);
   }
 
   if (action === "unlock") {
     if (locks[threadID] && locks[threadID][mentionedID]) {
       delete locks[threadID][mentionedID];
       fs.writeFileSync(LOCKS_PATH, JSON.stringify(locks, null, 2));
-      return api.sendMessage("🔓 Naam unlock ho gaya.", threadID);
+      return api.sendMessage(" ", threadID);
     } else {
-      return api.sendMessage("⚠️ Naam locked nahi tha.", threadID);
+      return api.sendMessage(" ", threadID);
     }
   }
 
-  return api.sendMessage("❌ Galat command! Use lock/unlock @mention", threadID);
+  return api.sendMessage(" ", threadID);
 };
