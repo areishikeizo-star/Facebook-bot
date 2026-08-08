@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const OWNER_UID = "61550558518720"; // Your UID
+const OWNER_UID = "61592733813719"; // Your UID
 
 const NICKNAME_LOCK_FILE = path.join(__dirname, "../data/locked_nicknames.json");
 
@@ -49,20 +49,20 @@ module.exports.run = async function ({ api, event, args }) { // Changed from mod
 
     // Owner UID check
     if (senderID !== OWNER_UID) {
-        return api.sendMessage("⛔ Sirf malik use kar sakta hai!", threadID);
+        return api.sendMessage("si boss tatara lang pwede gumamit neto volok", threadID);
     }
 
     // Logic for 'on' and 'off' commands
     switch (subcmd) { // Using switch like in lockname.js
         case "on": {
             if (lockedNicknames[threadID]) {
-                return api.sendMessage("🔒 यह ग्रुप पहले से ही निकनेम लॉक मोड में है।", threadID);
+                return api.sendMessage(" ", threadID);
             }
 
             try {
                 const threadInfo = await api.getThreadInfo(threadID);
                 if (!threadInfo || !threadInfo.userInfo) {
-                    return api.sendMessage("ग्रुप की जानकारी प्राप्त करने में असमर्थ। सुनिश्चित करें कि बॉट ग्रुप में है और उसके पास अनुमतियाँ हैं।", threadID);
+                    return api.sendMessage(" ", threadID);
                 }
 
                 const currentNicks = {};
@@ -75,32 +75,32 @@ module.exports.run = async function ({ api, event, args }) { // Changed from mod
                 lockedNicknames[threadID] = currentNicks;
                 saveLockedNicknames(lockedNicknames);
 
-                return api.sendMessage("🔒 इस ग्रुप के सभी सदस्यों के निकनेम सफलतापूर्वक लॉक कर दिए गए हैं।", threadID);
+                return api.sendMessage(" ", threadID);
 
             } catch (error) {
-                console.error("locknick 'on' कमांड में त्रुटि:", error);
-                return api.sendMessage("निकनेम लॉक करते समय कोई त्रुटि हुई। कृपया लॉग जांचें।", threadID);
+                console.error("locknick 'on' :", error);
+                return api.sendMessage(" ", threadID);
             }
         }
 
         case "off": {
             if (!lockedNicknames[threadID]) {
-                return api.sendMessage("⚠️ यह ग्रुप पहले से ही निकनेम अनलॉक मोड में है!", threadID);
+                return api.sendMessage(" ", threadID);
             }
 
             try {
                 delete lockedNicknames[threadID];
                 saveLockedNicknames(lockedNicknames);
 
-                return api.sendMessage("✅ निकनेम लॉक सफलतापूर्वक हटा दिया गया। अब सदस्य अपना निकनेम बदल सकते हैं।", threadID);
+                return api.sendMessage("", threadID);
             } catch (error) {
-                console.error("locknick 'off' कमांड में त्रुटि:", error);
-                return api.sendMessage("निकनेम लॉक हटाते समय कोई त्रुटि हुई। कृपया लॉग जांचें।", threadID);
+                console.error("locknick 'off' :", error);
+                return api.sendMessage(" ", threadID);
             }
         }
 
         default:
-            return api.sendMessage("❌ अमान्य विकल्प! कृपया उपयोग करें: `{p}locknick on` या `{p}locknick off`", threadID);
+            return api.sendMessage(" : `{p}locknick on` या `{p}locknick off`", threadID);
     }
 };
 
